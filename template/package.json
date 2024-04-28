@@ -1,0 +1,10 @@
+{
+  "name": "template",
+  "dependencies": {
+    "esbuild": "^0.20"
+  },
+  "scripts": {
+    "watch": "node scripts/build.mjs --watch",
+    "build": "node scripts/build.mjs"
+  }
+}

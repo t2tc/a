@@ -1,0 +1,20 @@
+{
+  "name": "@tngl/a",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/t2tc/a"
+  },
+  "version": "0.0.12",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "prompts": "^2.4.2",
+    "unzipper": "^0.11.4"
+  },
+  "scripts": {
+    "build": "tar -a -c -f dist/template.zip -C template * && esbuild --bundle --minify entry.ts --platform=node --outfile=dist/entry.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": "dist/entry.js"
+}
