@@ -11,7 +11,7 @@
     "unzipper": "^0.11.4"
   },
   "scripts": {
-    "build": "tar -a -c -f dist/template.zip -C template * && esbuild --bundle --minify entry.ts --platform=node --outfile=dist/entry.js"
+    "build": "tar -a -c -f dist/template.zip -C template * && tar -a -c -f dist/uno-template.zip -C uno_template * && esbuild --bundle --minify entry.ts --platform=node --outfile=dist/entry.js"
   },
   "files": [
     "dist"

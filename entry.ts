@@ -6,7 +6,7 @@ import * as unzipper from 'unzipper';
 import * as fs from 'fs';
 import path from 'path';
 
-async function ask(): Promise<{ inCurrent: boolean, folderName: string, overwrite?: boolean }> {
+async function ask(): Promise<{ inCurrent: boolean, folderName: string, overwrite?: boolean, useUnocss: boolean }> {
     const response = await prompts([{
         type: 'toggle',
         name: 'inCurrent',
@@ -24,6 +24,11 @@ async function ask(): Promise<{ inCurrent: boolean, folderName: string, overwrit
         name: 'overwrite',
         message: 'Folder already exists, do you want to overwrite it?',
         initial: false
+    }, {
+        type: 'toggle',
+        name: 'useUnocss',
+        message: "Do you want to use Unocss?",
+        initial: false,
     }
     ]);
     return response;
@@ -37,6 +42,8 @@ function replaceWordInFile(filePath: string, word: string, replacement: string) 
 
 async function main() {
     const template = path.join(path.dirname(process.argv[1]), './template.zip');
+    const unoTemplate = path.join(path.dirname(process.argv[1]), './uno-template.zip');
+
     let response = await ask();
     let folderName = response.folderName ?? '.';
 
@@ -51,12 +58,18 @@ async function main() {
         }
         fs.mkdirSync(folderName);
     }
-    fs.createReadStream(template).pipe(unzipper.Extract({ path: folderName })).on('close', () => {    
+
+    fs.createReadStream(template).pipe(unzipper.Extract({ path: folderName })).on('close', () => {
         replaceWordInFile(`${folderName}/package.json`, 'template', response.folderName == '.' ? path.basename(process.cwd()) : response.folderName);
         replaceWordInFile(`${folderName}/src/index.html`, 'template', response.folderName == '.' ? path.basename(process.cwd()) : response.folderName);
         console.log('Project created successfully');
     });
-    
+
+    if (response.useUnocss) {
+        fs.createReadStream(unoTemplate).pipe(unzipper.Extract({ path: folderName })).on('close', () => {
+
+        });
+    }
 }
 
 main();
